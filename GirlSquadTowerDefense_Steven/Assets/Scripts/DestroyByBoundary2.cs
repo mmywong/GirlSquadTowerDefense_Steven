@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor.SceneManagement;
 
 public class DestroyByBoundary2 : MonoBehaviour {
 	public Text castle2text;
-
+    public GameObject GameManager;
 	public int health2 = 5;
 
 
@@ -25,10 +26,12 @@ public class DestroyByBoundary2 : MonoBehaviour {
 		castle2text.text = "Health: " + health2.ToString();
 	}
 
-	void CheckGameOver()
-	{
-		if (health2 <= 0)
-			gameObject.GetComponent<ChangeScene> ().ChangeToScene ("GameOver");
+    void CheckGameOver()
+    {
+        if (health2 <= 0)
+        {
+            GameManager.GetComponent<ChangeScene>().ChangeToScene("P1win");
+        }
 	}
 
 }
