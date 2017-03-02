@@ -5,8 +5,13 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
 	public bool player1;
-	public float speed;
-	public int health;
+	public float speed = 2;
+	public int health = 5;
+	public int dps = 1;
+	public bool attacking = false;
+	public float cooldown = 2f;
+
+	public GameObject target;
 
 	void Start()
 	{
@@ -19,9 +24,36 @@ public class Enemy : MonoBehaviour {
 
 	void Update () 
 	{
-		Movement ();
+		cooldown -= Time.deltaTime;
+		if (!attacking)
+			Movement ();
+		else if (!CheckIfEnemyDead() && cooldown <= 0) 
+		{
+			Attack ();
+			cooldown = 2f;
+		}
 	}
-		
+
+	void OnTriggerStay2D(Collider2D other)
+	{
+		if (other.tag != this.tag && target == null) {
+			attacking = true;
+			target = other.gameObject;
+		} 
+	}
+
+	void Attack()
+	{
+		target.GetComponent<Enemy> ().health -= dps;
+		if (target.GetComponent<Enemy> ().health <= 0) 
+		{
+			Destroy (target);
+			target = null;
+			attacking = false;
+		}
+
+	}
+
 	void Movement()
 	{
 		if (player1) 
@@ -32,4 +64,14 @@ public class Enemy : MonoBehaviour {
 			transform.position -= new Vector3 (speed * Time.deltaTime, 0.0f, 0.0f);
 	}
 
+
+	bool CheckIfEnemyDead()
+	{
+		if (target == null) 
+		{
+			attacking = false;
+			return true;
+		}
+		return false;
+	}
 }

@@ -1,19 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
 	public GameObject leftCursor;
 	public GameObject rightCursor;
-	public GameObject enemy;
-
-
-
+	public GameObject enemy1;
+	public GameObject enemy2;
+	public float cooldown1 = 0f;
+	public float cooldown2 = 0f;
+	public int resource1 = 0;
+	public int resource2 = 0;
+	public int cost = 200;
+	public Text P1Text;
+	public Text P2Text;
 	public int player1lane = 1;
 	public int player2lane = 1;
-
 
 	void Awake()
 	{
@@ -27,12 +32,20 @@ public class GameManager : MonoBehaviour {
 	{
 		leftCursor = Instantiate (leftCursor);
 		rightCursor = Instantiate (rightCursor);
-
+		P1Text = GameObject.Find ("P1Resource").GetComponent<Text>();
+		P2Text = GameObject.Find ("P2Resource").GetComponent<Text>();
 	}
 
 
 	void Update()
 	{	
+		cooldown1 -= Time.deltaTime;
+		cooldown2 -= Time.deltaTime;
+		P1Text.text = "Resource: " + resource1.ToString ();
+		P2Text.text = "Resource: " + resource2.ToString ();
+
+		resource1 += 1;
+		resource2 += 1;
 		if (Input.GetKeyDown (KeyCode.LeftShift)) 
 		{
 			MoveCursor (leftCursor);
@@ -50,16 +63,19 @@ public class GameManager : MonoBehaviour {
 				player2lane += 1;
 		}
 
-		if (Input.GetKeyDown (KeyCode.A)) 
+		if (Input.GetKeyDown (KeyCode.A) && cooldown1 <= 0 && resource1 >= cost) 
 		{
-			SpawnEnemy (leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
+			resource1 -= cost;
+			cooldown1 = 2.0f;
+			SpawnEnemy (enemy1, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
 		}
-		if (Input.GetKeyDown (KeyCode.J)) 
+		if (Input.GetKeyDown (KeyCode.J) && cooldown2 <= 0 && resource2 >= cost) 
 		{
-			SpawnEnemy (rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
+			resource2 -= cost;
+			cooldown2 = 2.0f;
+			SpawnEnemy (enemy2, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
 
 		}
-
 	}
 
 	void MoveCursor(GameObject Cursor)
@@ -70,7 +86,7 @@ public class GameManager : MonoBehaviour {
 			Cursor.gameObject.transform.localPosition -= new Vector3 (0f, 3.5f, 0f);
 	}
 
-	void SpawnEnemy(Vector3 spawnPosition)
+	void SpawnEnemy(GameObject enemy, Vector3 spawnPosition)
 	{
 		Instantiate (enemy, spawnPosition, Quaternion.identity);
 	}
