@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class DestroyByBoundary : MonoBehaviour {
 	public Text castle1text;
-
+    public GameObject GameManager;
 	public int health1 = 1;
 
 
@@ -28,9 +28,10 @@ public class DestroyByBoundary : MonoBehaviour {
 
 	void CheckGameOver()
 	{
-		if (health1 <= 0)
+        print("inside1");
+        if (health1 <= 0)
         {
-            this.SendMessage("ChangeToScene", "GameOver");
+            GameManager.GetComponent<ChangeScene>().ChangeToScene("P2win");
         }
 	}
 }
