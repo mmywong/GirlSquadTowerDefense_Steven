@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class DestroyByBoundary : MonoBehaviour {
 	public Text castle1text;
     public GameObject GameManager;
-	public int health1 = 1;
+	public int health1 = 5;
 
 
 	void Start()
