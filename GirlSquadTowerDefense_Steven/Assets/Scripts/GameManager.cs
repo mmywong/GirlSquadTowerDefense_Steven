@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour {
 	public int player1lane = 1;
 	public int player2lane = 1;
 
+	private int player1;
+	private int player2;
+
 	void Awake()
 	{
 		if (instance == null)
@@ -30,6 +33,8 @@ public class GameManager : MonoBehaviour {
 
 	void Start()
 	{
+		player1 = GameObject.Find("CharacterChooser").GetComponent<ChooseCharacter>().player1;
+		player2 = GameObject.Find("CharacterChooser").GetComponent<ChooseCharacter>().player2;
 		leftCursor = Instantiate (leftCursor);
 		rightCursor = Instantiate (rightCursor);
 		P1Text = GameObject.Find ("P1Resource").GetComponent<Text>();
