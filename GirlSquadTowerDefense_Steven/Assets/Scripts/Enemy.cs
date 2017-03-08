@@ -5,9 +5,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
 	public bool player1;
-	public float speed = 2;
-	public int health = 5;
-	public int dps = 1;
+	public float speed = 2f;
+	public float health = 5f;
+	public float dps = 1f;
 	public bool attacking = false;
 	public float cooldown = 2f;
 
@@ -19,6 +19,27 @@ public class Enemy : MonoBehaviour {
 			player1 = true;
 		else
 			player1 = false;
+
+        //----Special Minion Stats----//
+        if(this.tag == "warrior")
+        {
+            dps = 1.2f;
+        }
+        else if (this.tag == "healer")
+        {
+            cooldown = 1.5f;
+                // call healer function
+        }
+        else if (this.tag == "mage")
+        {
+            speed = 2.5f;
+        }
+        else if (this.tag == "tank")
+        {
+            health = 7;
+            speed = 1.5f;
+        }
+        //else it's regular minion. do nothing.
 	}
 
 
@@ -39,7 +60,7 @@ public class Enemy : MonoBehaviour {
 		if (other.tag != this.tag && target == null) {
 			attacking = true;
 			target = other.gameObject;
-		} 
+		}
 	}
 
 	void Attack()
