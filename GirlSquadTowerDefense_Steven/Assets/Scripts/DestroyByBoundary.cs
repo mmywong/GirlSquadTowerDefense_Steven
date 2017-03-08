@@ -28,7 +28,6 @@ public class DestroyByBoundary : MonoBehaviour {
 
 	void CheckGameOver()
 	{
-        print("inside1");
         if (health1 <= 0)
         {
             GameManager.GetComponent<ChangeScene>().ChangeToScene("P2win");
