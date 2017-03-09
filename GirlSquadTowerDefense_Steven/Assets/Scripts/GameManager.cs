@@ -149,6 +149,4 @@ public class GameManager : MonoBehaviour {
 	{
 		Instantiate (enemy, spawnPosition, Quaternion.identity);
 	}
-		
-
 }
