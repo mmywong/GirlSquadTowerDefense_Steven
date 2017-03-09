@@ -31,38 +31,41 @@ public class ChooseCharacter : MonoBehaviour {
 
 	void Update () 
 	{
-		if (Input.GetKeyDown (KeyCode.LeftShift) && p1canmove) 
-		{
-			MoveCursor (RedCursor);
-			if (player1 == 4)
-				player1 = 1;
-			else
-				player1 += 1;
-		}
-		if (Input.GetKeyDown (KeyCode.RightShift) && p2canmove) 
-		{
-			MoveCursor (BlueCursor);
-			if (player2 == 4)
-				player2 = 1;
-			else
-				player2 += 1;
-		}
-		if (Input.GetKeyDown (KeyCode.A)) 
-		{
-			SelectCharacter1 ();
-		}
-		else if (Input.GetKeyDown (KeyCode.A) && !p1canmove) 
-		{
-			SelectCharacter1 ();
-		}
-		if (Input.GetKeyDown (KeyCode.J)) 
-		{
-			SelectCharacter2 ();
-		}
-		else if (Input.GetKeyDown (KeyCode.J) && !p2canmove) 
-		{
-			SelectCharacter2 ();
-		}
+        if(!(p1ready && p2ready))
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift) && p1canmove)
+            {
+                MoveCursor(RedCursor);
+                if (player1 == 4)
+                    player1 = 1;
+                else
+                    player1 += 1;
+            }
+            if (Input.GetKeyDown(KeyCode.RightShift) && p2canmove)
+            {
+                MoveCursor(BlueCursor);
+                if (player2 == 4)
+                    player2 = 1;
+                else
+                    player2 += 1;
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                SelectCharacter1();
+            }
+            else if (Input.GetKeyDown(KeyCode.A) && !p1canmove)
+            {
+                SelectCharacter1();
+            }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                SelectCharacter2();
+            }
+            else if (Input.GetKeyDown(KeyCode.J) && !p2canmove)
+            {
+                SelectCharacter2();
+            }
+        }
 	}
 
 	void MoveCursor(GameObject Cursor)
