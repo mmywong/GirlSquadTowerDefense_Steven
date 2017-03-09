@@ -21,20 +21,20 @@ public class Enemy : MonoBehaviour {
 			player1 = false;
 
         //----Special Minion Stats----//
-        if(this.tag == "warrior")
+        if(this.tag == "p1_warrior" || this.tag == "p2_warrior")
         {
             dps = 1.2f;
         }
-        else if (this.tag == "healer")
+        else if (this.tag == "p1_healer" || this.tag == "p2_healer")
         {
             cooldown = 1.5f;
                 // call healer function
         }
-        else if (this.tag == "mage")
+        else if (this.tag == "p1_mage" || this.tag == "p2_mage")
         {
             speed = 2.5f;
         }
-        else if (this.tag == "tank")
+        else if (this.tag == "p1_tank" || this.tag == "p2_tank")
         {
             health = 7;
             speed = 1.5f;

@@ -10,7 +10,17 @@ public class GameManager : MonoBehaviour {
 	public GameObject rightCursor;
 	public GameObject enemy1;
 	public GameObject enemy2;
-	public float cooldown1 = 0f;
+
+    public GameObject p1_warrior;
+    public GameObject p1_mage;
+    public GameObject p1_tank;
+    public GameObject p1_healer;
+    public GameObject p2_warrior;
+    public GameObject p2_mage;
+    public GameObject p2_tank;
+    public GameObject p2_healer;
+
+    public float cooldown1 = 0f;
 	public float cooldown2 = 0f;
 	public int resource1 = 0;
 	public int resource2 = 0;
@@ -34,10 +44,10 @@ public class GameManager : MonoBehaviour {
 
 	void Start()
 	{
-		player1 = GameObject.Find("CharacterChooser").GetComponent<ChooseCharacter>().player1;
+        leftCursor = Instantiate(leftCursor);
+        rightCursor = Instantiate(rightCursor);
+        player1 = GameObject.Find("CharacterChooser").GetComponent<ChooseCharacter>().player1;
 		player2 = GameObject.Find("CharacterChooser").GetComponent<ChooseCharacter>().player2;
-		leftCursor = Instantiate (leftCursor);
-		rightCursor = Instantiate (rightCursor);
 		P1Text = GameObject.Find ("P1Resource").GetComponent<Text>();
 		P2Text = GameObject.Find ("P2Resource").GetComponent<Text>();
 	}
@@ -81,11 +91,21 @@ public class GameManager : MonoBehaviour {
             resource1 -= spec_cost;
             cooldown1 = 2.0f;
 
-            if(player1 == 1)
+            switch(player1)
             {
-                print("steven");
+                case 1: // michelle
+                    SpawnEnemy(p1_mage, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
+                    break;
+                case 2: // steven
+                    SpawnEnemy(p1_warrior, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
+                    break;
+                case 3: // valerie
+                    SpawnEnemy(p1_tank, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
+                    break;
+                case 4: // jinnie
+                    SpawnEnemy(p1_healer, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
+                    break;
             }
-            SpawnEnemy(enemy1, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
         }
 
         //------------Player 2------------//
@@ -99,7 +119,21 @@ public class GameManager : MonoBehaviour {
         {
             resource2 -= spec_cost;
             cooldown2 = 2.0f;
-            SpawnEnemy(enemy2, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
+            switch (player2)
+            {
+                case 1: // michelle
+                    SpawnEnemy(p2_mage, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
+                    break;
+                case 2: // steven
+                    SpawnEnemy(p2_warrior, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
+                    break;
+                case 3: // valerie
+                    SpawnEnemy(p2_tank, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
+                    break;
+                case 4: // jinnie
+                    SpawnEnemy(p2_healer, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
+                    break;
+            }
         }
     }
 
