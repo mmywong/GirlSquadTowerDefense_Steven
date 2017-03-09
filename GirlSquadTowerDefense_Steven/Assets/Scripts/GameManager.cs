@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
 	public int resource1 = 0;
 	public int resource2 = 0;
 	public int cost = 200;
+    public int spec_cost = 300;
 	public Text P1Text;
 	public Text P2Text;
 	public int player1lane = 1;
@@ -68,20 +69,39 @@ public class GameManager : MonoBehaviour {
 				player2lane += 1;
 		}
 
+        //------------Player 1------------//
 		if (Input.GetKeyDown (KeyCode.A) && cooldown1 <= 0 && resource1 >= cost) 
 		{
 			resource1 -= cost;
 			cooldown1 = 2.0f;
 			SpawnEnemy (enemy1, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
 		}
-		if (Input.GetKeyDown (KeyCode.J) && cooldown2 <= 0 && resource2 >= cost) 
+        if (Input.GetKeyDown(KeyCode.S) && cooldown1 <= 0 && resource1 >= spec_cost)
+        {
+            resource1 -= spec_cost;
+            cooldown1 = 2.0f;
+
+            if(player1 == 1)
+            {
+                print("steven");
+            }
+            SpawnEnemy(enemy1, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
+        }
+
+        //------------Player 2------------//
+        if (Input.GetKeyDown (KeyCode.J) && cooldown2 <= 0 && resource2 >= cost) 
 		{
 			resource2 -= cost;
 			cooldown2 = 2.0f;
 			SpawnEnemy (enemy2, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
-
 		}
-	}
+        if (Input.GetKeyDown(KeyCode.K) && cooldown2 <= 0 && resource2 >= spec_cost)
+        {
+            resource2 -= spec_cost;
+            cooldown2 = 2.0f;
+            SpawnEnemy(enemy2, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
+        }
+    }
 
 	void MoveCursor(GameObject Cursor)
 	{

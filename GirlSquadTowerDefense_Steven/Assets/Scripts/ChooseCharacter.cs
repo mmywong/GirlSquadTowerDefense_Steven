@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ChooseCharacter : MonoBehaviour {
-
+    public GameObject GameManager;
 	public GameObject RedCursor;
 	public int player1 = 1;
 	public GameObject BlueCursor;
@@ -24,7 +24,10 @@ public class ChooseCharacter : MonoBehaviour {
 	{
 		RedCursor = Instantiate (RedCursor);
 		BlueCursor = Instantiate (BlueCursor);
-	}
+
+        RedCursor.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
+        BlueCursor.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
+    }
 
 	void Update () 
 	{
@@ -72,22 +75,41 @@ public class ChooseCharacter : MonoBehaviour {
 
 	void SelectCharacter1()
 	{
-		//if (p1ready && p2ready)
-			//ChangeScene to the gamescene
 		if (!p1canmove)
-			p1canmove = true;
+        {
+            p1canmove = true;
+            p1ready = false;
+            RedCursor.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
+        }
 		else
-			p1canmove = false;
+        {
+            p1canmove = false;
+            p1ready = true;
+            RedCursor.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        if (p1ready && p2ready)
+        {
+            GameManager.GetComponent<ChangeScene>().ChangeToScene("gamescene");
+        }
+    }
 
-	}
-
-	void SelectCharacter2()
+    void SelectCharacter2()
 	{
-		//if (p1ready && p2ready
-		//	changescene to the gamescene
 		if (!p2canmove)
-			p2canmove = true;
+        {
+            p2canmove = true;
+            p2ready = false;
+            BlueCursor.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.6f);
+        }
 		else
-			p2canmove = false;
-	}
+        {
+            p2canmove = false;
+            p2ready = true;
+            BlueCursor.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        if (p1ready && p2ready)
+        {
+            GameManager.GetComponent<ChangeScene>().ChangeToScene("gamescene");
+        }
+    }
 }
