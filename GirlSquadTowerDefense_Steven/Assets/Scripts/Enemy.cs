@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour {
 	public float health = 5f;
 	public float dps = 1f;
 	public bool attacking = false;
+    public bool healing = false;
 	public float cooldown = 2f;
 
 	public GameObject target;
@@ -46,22 +47,40 @@ public class Enemy : MonoBehaviour {
 	void Update () 
 	{
 		cooldown -= Time.deltaTime;
-		if (!attacking)
-			Movement ();
-		else if (!CheckIfEnemyDead() && cooldown <= 0) 
-		{
-			Attack ();
-			cooldown = 2f;
-		}
+        if (!attacking && !healing)
+            Movement();
+        else if (attacking && !CheckIfEnemyDead() && cooldown <= 0)
+        {
+            Attack();
+            cooldown = 2f;
+        }
+        else if(healing && !CheckIfAllyDead() && cooldown <= 0)
+        {
+            Heal();
+            cooldown = 1.5f;
+        }
+        
 	}
 
 	void OnTriggerStay2D(Collider2D other)
-	{
-		if (other.tag != this.tag && target == null) {
-			attacking = true;
-			target = other.gameObject;
-		}
-	}
+    {
+        //other is an enemy, attack!
+        if (this.tag[1] != other.tag[1] && target == null)
+        {
+            attacking = true;
+            healing = false;
+            target = other.gameObject;
+        }
+        //this is a healer and other is an ally, heal!
+        else if ((   (this.tag == "p1_healer" && this.tag[1] == other.tag[1]) ||
+                    (this.tag == "p2_healer" && this.tag[1] == other.tag[1])    ) && target == null)
+        {
+            healing = true;
+            attacking = false;
+            target = other.gameObject;
+        }
+        // else, minion sees its own healer. continue
+    }
 
 	void Attack()
 	{
@@ -75,7 +94,20 @@ public class Enemy : MonoBehaviour {
 
 	}
 
-	void Movement()
+    void Heal()
+    { 
+        print("health:  " + target.GetComponent<Enemy>().health);
+        target.GetComponent<Enemy>().health += 1.0f;
+        if (target.GetComponent<Enemy>().health <= 0)
+        {
+            Destroy(target);
+            target = null;
+            healing = false;
+        }
+
+    }
+
+    void Movement()
 	{
 		if (player1) 
 		{
@@ -95,4 +127,14 @@ public class Enemy : MonoBehaviour {
 		}
 		return false;
 	}
+
+    bool CheckIfAllyDead()
+    {
+        if (target == null)
+        {
+            healing = false;
+            return true;
+        }
+        return false;
+    }
 }
