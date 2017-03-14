@@ -70,10 +70,11 @@ public class ChooseCharacter : MonoBehaviour {
 
 	void MoveCursor(GameObject Cursor)
 	{
+        //init x = -7. x goes -7, -3, 1, 5
 		if (Cursor.gameObject.transform.localPosition.x == 5.0f)
-			Cursor.gameObject.transform.localPosition -= new Vector3 (15.0f, 0f, 0f);
+			Cursor.gameObject.transform.localPosition -= new Vector3 (12.0f, 0f, 0f);
 		else 
-			Cursor.gameObject.transform.localPosition += new Vector3 (5.0f, 0f, 0f);
+			Cursor.gameObject.transform.localPosition += new Vector3 (4.0f, 0f, 0f);
 	}
 
 	void SelectCharacter1()
