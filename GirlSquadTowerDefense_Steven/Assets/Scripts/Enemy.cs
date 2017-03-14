@@ -96,15 +96,18 @@ public class Enemy : MonoBehaviour {
 
     void Heal()
     { 
-        print("health:  " + target.GetComponent<Enemy>().health);
+        //print("health:  " + target.GetComponent<Enemy>().health);
         target.GetComponent<Enemy>().health += 1.0f;
-        if (target.GetComponent<Enemy>().health <= 0)
+        if(target.GetComponent<Enemy>().health >= 5)
+        {
+            healing = false;
+        }
+        else if (target.GetComponent<Enemy>().health <= 0)
         {
             Destroy(target);
             target = null;
             healing = false;
         }
-
     }
 
     void Movement()
