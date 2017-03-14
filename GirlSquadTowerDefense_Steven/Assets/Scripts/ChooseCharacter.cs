@@ -93,7 +93,8 @@ public class ChooseCharacter : MonoBehaviour {
         }
         if (p1ready && p2ready)
         {
-            GameManager.GetComponent<ChangeScene>().ChangeToScene("gamescene");
+            GameManager.GetComponent<ChangeScene>().ChangeToScene("michelle_cooldown");
+            //GameManager.GetComponent<ChangeScene>().ChangeToScene("gamescene");
         }
     }
 
@@ -113,7 +114,8 @@ public class ChooseCharacter : MonoBehaviour {
         }
         if (p1ready && p2ready)
         {
-            GameManager.GetComponent<ChangeScene>().ChangeToScene("gamescene");
+            GameManager.GetComponent<ChangeScene>().ChangeToScene("michelle_cooldown");
+            //GameManager.GetComponent<ChangeScene>().ChangeToScene("gamescene");
         }
     }
 }
