@@ -18,7 +18,8 @@ public class DestroyByBoundary2 : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		Destroy (other.gameObject);
-		health2 -= 1;
+		if (other.tag != "carrot")
+			health2 -= 1;
 	}
 	void Update()
 	{
