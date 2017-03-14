@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour {
 	public Text P2Text;
 	public int player1lane = 1;
 	public int player2lane = 1;
+	public bool p1ult = true;
+	public bool p2ult = true;
 
 	private int player1;
 	private int player2;
@@ -107,6 +109,33 @@ public class GameManager : MonoBehaviour {
                     break;
             }
         }
+		if (Input.GetKeyDown (KeyCode.D) && p1ult) 
+		{
+			switch(player1)
+			{
+				case 1: // michelle
+					GameObject[] listofopponents1;
+					listofopponents1 = GameObject.FindGameObjectsWithTag ("p2_minion");
+					for (int i = 0; i < listofopponents1.Length; i++) {
+						listofopponents1 [i].GetComponent<Enemy> ().health -= 1;
+					}
+					break;
+				case 2: // steven
+					GameObject[] listofopponents2;
+					listofopponents2 = GameObject.FindGameObjectsWithTag ("p2_minion");
+					for (int i = 0; i < listofopponents2.Length; i++) {
+						listofopponents2 [i].GetComponent<Enemy> ().speed = 0.6f;
+					}
+					break;
+				case 3: // valerie
+					
+					break;
+				case 4: // jinnie
+					gameObject.GetComponent<DestroyByBoundary>().health1++;
+					break;
+			}
+			p1ult = false;
+		}
 
         //------------Player 2------------//
         if (Input.GetKeyDown (KeyCode.J) && cooldown2 <= 0 && resource2 >= cost) 
@@ -135,6 +164,34 @@ public class GameManager : MonoBehaviour {
                     break;
             }
         }
+		if (Input.GetKeyDown (KeyCode.L) && p2ult) 
+		{
+			switch (player2) 
+			{
+			case 1: // michelle
+				GameObject[] listofopponents1;
+				listofopponents1 = GameObject.FindGameObjectsWithTag ("p1_minion");
+				for (int i = 0; i < listofopponents1.Length; i++) {
+					listofopponents1 [i].GetComponent<Enemy> ().health -= 1;
+				}
+				break;
+			case 2: // steven
+				GameObject[] listofopponents2;
+				listofopponents2 = GameObject.FindGameObjectsWithTag ("p1_minion");
+				for (int i = 0; i < listofopponents2.Length; i++) {
+					listofopponents2 [i].GetComponent<Enemy> ().speed = 0.6f;
+				}
+				break;
+			case 3: // valerie
+				
+				break;
+				case 4: // jinnie
+					gameObject.GetComponent<DestroyByBoundary2>().health2++;
+					break;
+			}
+			p2ult = false;
+		}
+
     }
 
 	void MoveCursor(GameObject Cursor)

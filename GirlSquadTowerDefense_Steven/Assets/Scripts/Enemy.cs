@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour {
     public bool healing = false;
 	public float cooldown = 2f;
 	public float nextFire = 1f;
+	public bool invulnerable = false;
 
 	public GameObject target;
 	private Animator animator;
@@ -39,7 +40,6 @@ public class Enemy : MonoBehaviour {
         {
             speed = 3f;
 			cooldown = 1.6f;
-			dps = 1.2f;
         }
         else if (this.tag == "p1_tank" || this.tag == "p2_tank")
         {
@@ -99,7 +99,10 @@ public class Enemy : MonoBehaviour {
 
 	void Attack()
 	{
-		target.GetComponent<Enemy> ().health -= dps;
+		if (target.GetComponent<Enemy>().invulnerable)
+			target.GetComponent<Enemy> ().health -= 0;
+		else
+			target.GetComponent<Enemy> ().health -= dps;
 		if (target.GetComponent<Enemy> ().health <= 0) 
 		{
 			Destroy (target);
