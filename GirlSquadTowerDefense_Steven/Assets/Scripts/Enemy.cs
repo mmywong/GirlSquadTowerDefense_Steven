@@ -11,11 +11,15 @@ public class Enemy : MonoBehaviour {
 	public bool attacking = false;
     public bool healing = false;
 	public float cooldown = 2f;
+	public float nextFire = 1f;
 
 	public GameObject target;
+	private Animator animator;
+
 
 	void Start()
 	{
+		animator = GetComponent<Animator> ();
 		if (transform.position.x < 0)
 			player1 = true;
 		else
@@ -24,21 +28,22 @@ public class Enemy : MonoBehaviour {
         //----Special Minion Stats----//
         if(this.tag == "p1_warrior" || this.tag == "p2_warrior")
         {
-            dps = 1.2f;
+            dps = 1.3f;
         }
         else if (this.tag == "p1_healer" || this.tag == "p2_healer")
         {
-            cooldown = 1.5f;
+            cooldown = 1.4f;
                 // call healer function
         }
         else if (this.tag == "p1_mage" || this.tag == "p2_mage")
         {
-            speed = 2.5f;
+            speed = 3f;
+			cooldown = 1.6f;
+			dps = 1.2f;
         }
         else if (this.tag == "p1_tank" || this.tag == "p2_tank")
         {
             health = 7;
-            speed = 1.5f;
         }
         //else it's regular minion. do nothing.
 	}
@@ -47,38 +52,48 @@ public class Enemy : MonoBehaviour {
 	void Update () 
 	{
 		cooldown -= Time.deltaTime;
-        if (!attacking && !healing)
-            Movement();
+		nextFire -= Time.deltaTime;
+
+		if (!attacking && !healing) {
+			Movement ();
+		}
         else if (attacking && !CheckIfEnemyDead() && cooldown <= 0)
         {
             Attack();
-            cooldown = 2f;
+			if (this.tag == "p1_mage" || this.tag == "p2_mage")
+				cooldown = 1.6f;
+			if (this.tag == "p1_healer" || this.tag == "p2_healer")
+				cooldown = 1.4f;
+			else
+            	cooldown = 2.0f;
+			animator.SetTrigger ("EnemyAttack");
         }
         else if(healing && !CheckIfAllyDead() && cooldown <= 0)
         {
             Heal();
             cooldown = 1.5f;
         }
-        
 	}
 
 	void OnTriggerStay2D(Collider2D other)
     {
         //other is an enemy, attack!
-        if (this.tag[1] != other.tag[1] && target == null)
-        {
-            attacking = true;
-            healing = false;
-            target = other.gameObject;
-        }
+		if ((this.tag [1] != other.tag [1]) && other.tag != "carrot" && target == null) {
+			attacking = true;
+			healing = false;
+			target = other.gameObject;
+		}
         //this is a healer and other is an ally, heal!
-        else if ((   (this.tag == "p1_healer" && this.tag[1] == other.tag[1]) ||
-                    (this.tag == "p2_healer" && this.tag[1] == other.tag[1])    ) && target == null)
-        {
-            healing = true;
-            attacking = false;
-            target = other.gameObject;
-        }
+        else if (((this.tag == "p1_healer" && this.tag [1] == other.tag [1]) ||
+		               (this.tag == "p2_healer" && this.tag [1] == other.tag [1])) && target == null) {
+			healing = true;
+			attacking = false;
+			target = other.gameObject;
+		} 
+//		else if (other.tag == "carrot") {
+//			health--;
+//			Destroy (other);
+//		}
         // else, minion sees its own healer. continue
     }
 
