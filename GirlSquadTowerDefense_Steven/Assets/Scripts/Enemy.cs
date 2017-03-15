@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour {
 	public float dps = 1f;
 	public bool attacking = false;
     public bool healing = false;
+	public bool alreadyhealed = false;
 	public float cooldown = 2f;
 	public float invulcooldown = 4f;
 	public float nextFire = 1f;
@@ -65,25 +66,24 @@ public class Enemy : MonoBehaviour {
 				invulnerable = false;
 		}
 
-        else if (attacking && !CheckIfEnemyDead() && cooldown <= 0)
-        {
-            Attack();
+		if (attacking && !CheckIfEnemyDead () && cooldown <= 0) {
+			Attack ();
 			if (this.tag == "p1_mage" || this.tag == "p2_mage")
 				cooldown = 1.6f;
 			if (this.tag == "p1_healer" || this.tag == "p2_healer")
 				cooldown = 1.4f;
 			else
-            	cooldown = 2.0f;
+				cooldown = 2.0f;
 			animator.SetTrigger ("EnemyAttack");
-        }
-		if ((this.tag == "p1_healer" || this.tag == "p2_healer") && target != null) {
-			target = null;
 		}
 
-        else if(healing && !CheckIfAllyDead() && cooldown <= 0)
+        if(healing && cooldown <= 0)
         {
-            Heal();
-            cooldown = 1.5f;
+			target.GetComponent<Enemy> ().health += 1;
+			target = null;
+			healing = false;
+			alreadyhealed = true;
+            cooldown = 1.4f;
         }
 
 	}
@@ -98,15 +98,10 @@ public class Enemy : MonoBehaviour {
 		}
         //this is a healer and other is an ally, heal!
         else if (((this.tag == "p1_healer" && this.tag [1] == other.tag [1]) ||
-		               (this.tag == "p2_healer" && this.tag [1] == other.tag [1])) && target == null) {
+			(this.tag == "p2_healer" && this.tag [1] == other.tag [1])) && target == null && alreadyhealed == false) {
 			healing = true;
-			attacking = false;
 			target = other.gameObject;
 		} 
-//		else if (other.tag == "carrot") {
-//			health--;
-//			Destroy (other);
-//		}
         // else, minion sees its own healer. continue
     }
 
@@ -124,22 +119,6 @@ public class Enemy : MonoBehaviour {
 		}
 
 	}
-
-    void Heal()
-    { 
-        //print("health:  " + target.GetComponent<Enemy>().health);
-        target.GetComponent<Enemy>().health += 1.0f;
-        if(target.GetComponent<Enemy>().health >= 5)
-        {
-            healing = false;
-        }
-        else if (target.GetComponent<Enemy>().health <= 0)
-        {
-            Destroy(target);
-            target = null;
-            healing = false;
-        }
-    }
 
     void Movement()
 	{
@@ -161,14 +140,4 @@ public class Enemy : MonoBehaviour {
 		}
 		return false;
 	}
-
-    bool CheckIfAllyDead()
-    {
-        if (target == null)
-        {
-            healing = false;
-            return true;
-        }
-        return false;
-    }
 }
