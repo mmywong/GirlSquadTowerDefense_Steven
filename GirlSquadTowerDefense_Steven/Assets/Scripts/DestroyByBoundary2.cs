@@ -32,6 +32,8 @@ public class DestroyByBoundary2 : MonoBehaviour {
         if (health2 <= 0)
         {
             GameManager.GetComponent<ChangeScene>().ChangeToScene("P1win");
+			GameObject reset = GameObject.Find ("CharacterChooser");
+			Destroy (reset);
         }
 	}
 

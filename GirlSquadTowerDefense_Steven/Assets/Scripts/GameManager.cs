@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour {
 
     public float cooldown1 = 0f;
 	public float cooldown2 = 0f;
-	public int resource1 = 0;
-	public int resource2 = 0;
+	public int resource1 = 300;
+	public int resource2 = 300;
 	public int cost = 200;
     public int spec_cost = 300;
 	public Text P1Text;
@@ -128,10 +128,14 @@ public class GameManager : MonoBehaviour {
 					}
 					break;
 				case 3: // valerie
-					
+					GameObject[] listofself;
+					listofself = GameObject.FindGameObjectsWithTag ("p1_tank");
+					for (int i = 0; i < listofself.Length; i++) {
+						listofself [i].GetComponent<Enemy> ().invulnerable = true;
+					}
 					break;
 				case 4: // jinnie
-					gameObject.GetComponent<DestroyByBoundary>().health1++;
+					GameObject.Find("p1boundary").GetComponent<DestroyByBoundary>().health1++;
 					break;
 			}
 			p1ult = false;
@@ -164,10 +168,8 @@ public class GameManager : MonoBehaviour {
                     break;
             }
         }
-		if (Input.GetKeyDown (KeyCode.L) && p2ult) 
-		{
-			switch (player2) 
-			{
+		if (Input.GetKeyDown (KeyCode.L) && p2ult) {
+			switch (player2) {
 			case 1: // michelle
 				GameObject[] listofopponents1;
 				listofopponents1 = GameObject.FindGameObjectsWithTag ("p1_minion");
@@ -183,11 +185,15 @@ public class GameManager : MonoBehaviour {
 				}
 				break;
 			case 3: // valerie
-				
+				GameObject[] listofself;
+				listofself = GameObject.FindGameObjectsWithTag ("p2_tank");
+				for (int i = 0; i < listofself.Length; i++) {
+					listofself [i].GetComponent<Enemy> ().invulnerable = true;
+				}
 				break;
-				case 4: // jinnie
-					gameObject.GetComponent<DestroyByBoundary2>().health2++;
-					break;
+			case 4: // jinnie
+				GameObject.Find ("p2boundary").GetComponent<DestroyByBoundary2> ().health2++;
+				break;
 			}
 			p2ult = false;
 		}

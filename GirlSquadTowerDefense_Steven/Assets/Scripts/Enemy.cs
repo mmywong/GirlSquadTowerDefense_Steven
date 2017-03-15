@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
 	public bool attacking = false;
     public bool healing = false;
 	public float cooldown = 2f;
+	public float invulcooldown = 4f;
 	public float nextFire = 1f;
 	public bool invulnerable = false;
 
@@ -57,6 +58,13 @@ public class Enemy : MonoBehaviour {
 		if (!attacking && !healing) {
 			Movement ();
 		}
+		if (invulnerable) 
+		{
+			invulcooldown -= Time.deltaTime;
+			if (invulcooldown <= 0)
+				invulnerable = false;
+		}
+
         else if (attacking && !CheckIfEnemyDead() && cooldown <= 0)
         {
             Attack();
@@ -68,17 +76,22 @@ public class Enemy : MonoBehaviour {
             	cooldown = 2.0f;
 			animator.SetTrigger ("EnemyAttack");
         }
+		if ((this.tag == "p1_healer" || this.tag == "p2_healer") && target != null) {
+			target = null;
+		}
+
         else if(healing && !CheckIfAllyDead() && cooldown <= 0)
         {
             Heal();
             cooldown = 1.5f;
         }
+
 	}
 
 	void OnTriggerStay2D(Collider2D other)
     {
         //other is an enemy, attack!
-		if ((this.tag [1] != other.tag [1]) && other.tag != "carrot" && target == null) {
+		if ((this.tag [1] != other.tag [1]) && target == null) {
 			attacking = true;
 			healing = false;
 			target = other.gameObject;
