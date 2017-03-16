@@ -20,8 +20,11 @@ public class GameManager : MonoBehaviour {
     public GameObject p2_tank;
     public GameObject p2_healer;
 
-    public float cooldown1 = 0f;
-	public float cooldown2 = 0f;
+    public float cooldown_p1s1 = 0f;
+    public float cooldown_p1s2 = 0f;
+	public float cooldown_p2s1 = 0f;
+    public float cooldown_p2s2 = 0f;
+    
 	public int resource1 = 300;
 	public int resource2 = 300;
 	public int cost = 200;
@@ -32,6 +35,16 @@ public class GameManager : MonoBehaviour {
 	public int player2lane = 1;
 	public bool p1ult = true;
 	public bool p2ult = true;
+
+    //cooldown bars
+    public GameObject p1s1;
+    public Image p1s1_i;
+    public GameObject p1s2;
+    public Image p1s2_i;
+    public GameObject p2s1;
+    public Image p2s1_i;
+    public GameObject p2s2;
+    public Image p2s2_i;
 
 	private int player1;
 	private int player2;
@@ -46,6 +59,19 @@ public class GameManager : MonoBehaviour {
 
 	void Start()
 	{
+        p1s1 = GameObject.Find("p1s1");
+        if (p1s1 != null)
+            p1s1_i = p1s1.GetComponent<Image>();
+        p1s2 = GameObject.Find("p1s2");
+        if (p1s2 != null)
+            p1s2_i = p1s2.GetComponent<Image>();
+        p2s1 = GameObject.Find("p2s1");
+        if (p2s1 != null)
+            p2s1_i = p2s1.GetComponent<Image>();
+        p2s2 = GameObject.Find("p2s2");
+        if (p2s2 != null)
+            p2s2_i = p2s2.GetComponent<Image>();
+
         leftCursor = Instantiate(leftCursor);
         rightCursor = Instantiate(rightCursor);
         player1 = GameObject.Find("CharacterChooser").GetComponent<ChooseCharacter>().player1;
@@ -57,8 +83,11 @@ public class GameManager : MonoBehaviour {
 
 	void Update()
 	{	
-		cooldown1 -= Time.deltaTime;
-		cooldown2 -= Time.deltaTime;
+		cooldown_p1s1 += Time.deltaTime;
+        cooldown_p1s2 += Time.deltaTime;
+		cooldown_p2s1 += Time.deltaTime;
+        cooldown_p2s2 += Time.deltaTime;
+        UpdateCooldowns();
 		P1Text.text = "Resource: " + resource1.ToString ();
 		P2Text.text = "Resource: " + resource2.ToString ();
 
@@ -82,16 +111,16 @@ public class GameManager : MonoBehaviour {
 		}
 
         //------------Player 1------------//
-		if (Input.GetKeyDown (KeyCode.A) && cooldown1 <= 0 && resource1 >= cost) 
+		if (Input.GetKeyDown (KeyCode.A) && cooldown_p1s1 >= 2.0f && resource1 >= cost) 
 		{
 			resource1 -= cost;
-			cooldown1 = 2.0f;
+			cooldown_p1s1 = 0.0f;
 			SpawnEnemy (enemy1, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
 		}
-        if (Input.GetKeyDown(KeyCode.S) && cooldown1 <= 0 && resource1 >= spec_cost)
+        if (Input.GetKeyDown(KeyCode.S) && cooldown_p1s2 >= 3.0f && resource1 >= spec_cost)
         {
             resource1 -= spec_cost;
-            cooldown1 = 2.0f;
+            cooldown_p1s2 = 0.0f;
 
             switch(player1)
             {
@@ -142,16 +171,16 @@ public class GameManager : MonoBehaviour {
 		}
 
         //------------Player 2------------//
-        if (Input.GetKeyDown (KeyCode.J) && cooldown2 <= 0 && resource2 >= cost) 
+        if (Input.GetKeyDown (KeyCode.J) && cooldown_p2s1 >= 2.0f && resource2 >= cost) 
 		{
 			resource2 -= cost;
-			cooldown2 = 2.0f;
+			cooldown_p2s1 = 0.0f;
 			SpawnEnemy (enemy2, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
 		}
-        if (Input.GetKeyDown(KeyCode.K) && cooldown2 <= 0 && resource2 >= spec_cost)
+        if (Input.GetKeyDown(KeyCode.K) && cooldown_p2s2 >= 3.0f && resource2 >= spec_cost)
         {
             resource2 -= spec_cost;
-            cooldown2 = 2.0f;
+            cooldown_p2s2 = 0.0f;
             switch (player2)
             {
                 case 1: // michelle
@@ -212,4 +241,27 @@ public class GameManager : MonoBehaviour {
 	{
 		Instantiate (enemy, spawnPosition, Quaternion.identity);
 	}
+
+    void UpdateCooldowns()
+    {
+        if (cooldown_p1s1 >= 2f)
+            cooldown_p1s1 = 2f;
+        if (cooldown_p1s2 >= 3f)
+            cooldown_p1s2 = 3f;
+        if (cooldown_p2s1 >= 2f)
+            cooldown_p2s1 = 2f;
+        if (cooldown_p2s2 >= 3f)
+            cooldown_p2s2 = 3f;
+        float ratio_p1s1 = cooldown_p1s1 / 2.0f;
+        p1s1_i.rectTransform.localScale = new Vector3(ratio_p1s1, 1, 1);
+
+        float ratio_p1s2 = cooldown_p1s2 / 3.0f;
+        p1s2_i.rectTransform.localScale = new Vector3(ratio_p1s2, 1, 1);
+
+        float ratio_p2s1 = cooldown_p2s1 / 2.0f;
+        p2s1_i.rectTransform.localScale = new Vector3(ratio_p2s1, 1, 1);
+
+        float ratio_p2s2 = cooldown_p2s2 / 3.0f;
+        p2s2_i.rectTransform.localScale = new Vector3(ratio_p2s2, 1, 1);
+    }
 }
