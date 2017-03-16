@@ -33,6 +33,12 @@ public class GameManager : MonoBehaviour {
 	public bool p1ult = true;
 	public bool p2ult = true;
 
+
+	public AudioSource bearsound;
+	public AudioSource lightningsound;
+	public AudioSource healsound;
+	public AudioSource powerupsound;
+
 	private int player1;
 	private int player2;
 
@@ -52,6 +58,11 @@ public class GameManager : MonoBehaviour {
 		player2 = GameObject.Find("CharacterChooser").GetComponent<ChooseCharacter>().player2;
 		P1Text = GameObject.Find ("P1Resource").GetComponent<Text>();
 		P2Text = GameObject.Find ("P2Resource").GetComponent<Text>();
+		AudioSource[] allMyAudioSources = GetComponents<AudioSource> ();
+		healsound = allMyAudioSources [0];
+		bearsound = allMyAudioSources [1];
+		powerupsound = allMyAudioSources [2];
+		lightningsound = allMyAudioSources [3];
 	}
 
 
@@ -85,13 +96,13 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.A) && cooldown1 <= 0 && resource1 >= cost) 
 		{
 			resource1 -= cost;
-			cooldown1 = 2.0f;
+			cooldown1 = 1.5f;
 			SpawnEnemy (enemy1, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
 		}
         if (Input.GetKeyDown(KeyCode.S) && cooldown1 <= 0 && resource1 >= spec_cost)
         {
             resource1 -= spec_cost;
-            cooldown1 = 2.0f;
+            cooldown1 = 1.5f;
 
             switch(player1)
             {
@@ -119,6 +130,7 @@ public class GameManager : MonoBehaviour {
 					for (int i = 0; i < listofopponents1.Length; i++) {
 						listofopponents1 [i].GetComponent<Enemy> ().health -= 1;
 					}
+					lightningsound.Play ();
 					break;
 				case 2: // steven
 					GameObject[] listofopponents2;
@@ -126,6 +138,7 @@ public class GameManager : MonoBehaviour {
 					for (int i = 0; i < listofopponents2.Length; i++) {
 						listofopponents2 [i].GetComponent<Enemy> ().speed = 0.6f;
 					}
+					powerupsound.Play ();
 					break;
 				case 3: // valerie
 					GameObject[] listofself;
@@ -133,9 +146,11 @@ public class GameManager : MonoBehaviour {
 					for (int i = 0; i < listofself.Length; i++) {
 						listofself [i].GetComponent<Enemy> ().invulnerable = true;
 					}
+					bearsound.Play ();
 					break;
 				case 4: // jinnie
-					GameObject.Find("p1boundary").GetComponent<DestroyByBoundary>().health1++;
+					GameObject.Find ("p1boundary").GetComponent<DestroyByBoundary> ().health1++;
+					healsound.Play ();
 					break;
 			}
 			p1ult = false;
@@ -145,13 +160,13 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.J) && cooldown2 <= 0 && resource2 >= cost) 
 		{
 			resource2 -= cost;
-			cooldown2 = 2.0f;
+			cooldown2 = 1.5f;
 			SpawnEnemy (enemy2, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
 		}
         if (Input.GetKeyDown(KeyCode.K) && cooldown2 <= 0 && resource2 >= spec_cost)
         {
             resource2 -= spec_cost;
-            cooldown2 = 2.0f;
+            cooldown2 = 1.5f;
             switch (player2)
             {
                 case 1: // michelle
@@ -168,32 +183,38 @@ public class GameManager : MonoBehaviour {
                     break;
             }
         }
-		if (Input.GetKeyDown (KeyCode.L) && p2ult) {
-			switch (player2) {
-			case 1: // michelle
-				GameObject[] listofopponents1;
-				listofopponents1 = GameObject.FindGameObjectsWithTag ("p1_minion");
-				for (int i = 0; i < listofopponents1.Length; i++) {
-					listofopponents1 [i].GetComponent<Enemy> ().health -= 1;
-				}
-				break;
-			case 2: // steven
-				GameObject[] listofopponents2;
-				listofopponents2 = GameObject.FindGameObjectsWithTag ("p1_minion");
-				for (int i = 0; i < listofopponents2.Length; i++) {
-					listofopponents2 [i].GetComponent<Enemy> ().speed = 0.6f;
-				}
-				break;
-			case 3: // valerie
-				GameObject[] listofself;
-				listofself = GameObject.FindGameObjectsWithTag ("p2_tank");
-				for (int i = 0; i < listofself.Length; i++) {
-					listofself [i].GetComponent<Enemy> ().invulnerable = true;
-				}
-				break;
-			case 4: // jinnie
-				GameObject.Find ("p2boundary").GetComponent<DestroyByBoundary2> ().health2++;
-				break;
+		if (Input.GetKeyDown (KeyCode.L) && p2ult) 
+		{
+			switch (player2) 
+			{
+				case 1: // michelle
+					GameObject[] listofopponents1;
+					listofopponents1 = GameObject.FindGameObjectsWithTag ("p1_minion");
+					for (int i = 0; i < listofopponents1.Length; i++) {
+						listofopponents1 [i].GetComponent<Enemy> ().health -= 1;
+					}
+					lightningsound.Play ();
+					break;
+				case 2: // steven
+					GameObject[] listofopponents2;
+					listofopponents2 = GameObject.FindGameObjectsWithTag ("p1_minion");
+					for (int i = 0; i < listofopponents2.Length; i++) {
+						listofopponents2 [i].GetComponent<Enemy> ().speed = 0.6f;
+					}
+					powerupsound.Play ();
+					break;
+				case 3: // valerie
+					GameObject[] listofself;
+					listofself = GameObject.FindGameObjectsWithTag ("p2_tank");
+					for (int i = 0; i < listofself.Length; i++) {
+						listofself [i].GetComponent<Enemy> ().invulnerable = true;
+					}
+					bearsound.Play ();
+					break;
+				case 4: // jinnie
+					GameObject.Find ("p2boundary").GetComponent<DestroyByBoundary2> ().health2++;
+					healsound.Play ();
+					break;
 			}
 			p2ult = false;
 		}
