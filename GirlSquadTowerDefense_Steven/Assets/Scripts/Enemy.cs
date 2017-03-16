@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour {
         }
         else if (this.tag == "p1_tank" || this.tag == "p2_tank")
         {
-            health = 7;
+            health = 6;
         }
         //else it's regular minion. do nothing.
 	}
