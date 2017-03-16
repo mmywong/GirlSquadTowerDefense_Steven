@@ -45,6 +45,12 @@ public class GameManager : MonoBehaviour {
     public Image p2s1_i;
     public GameObject p2s2;
     public Image p2s2_i;
+    public GameObject a;
+    public GameObject s;
+    public GameObject d;
+    public GameObject j;
+    public GameObject k;
+    public GameObject l;
 
 	public AudioSource bearsound;
 	public AudioSource lightningsound;
