@@ -25,10 +25,10 @@ public class GameManager : MonoBehaviour {
 	public float cooldown_p2s1 = 0f;
     public float cooldown_p2s2 = 0f;
     
-	public int resource1 = 300;
-	public int resource2 = 300;
-	public int cost = 200;
-    public int spec_cost = 300;
+	public int resource1 = 400;
+	public int resource2 = 400;
+	public int cost = 100;
+	public int spec_cost = 250;
 	public Text P1Text;
 	public Text P2Text;
 	public int player1lane = 1;
