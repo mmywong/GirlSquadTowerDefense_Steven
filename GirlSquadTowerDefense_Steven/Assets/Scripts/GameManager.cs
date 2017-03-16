@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour {
 	public bool p1ult = true;
 	public bool p2ult = true;
 
-<<<<<<< HEAD
     //cooldown bars
     public GameObject p1s1;
     public Image p1s1_i;
@@ -46,13 +45,11 @@ public class GameManager : MonoBehaviour {
     public Image p2s1_i;
     public GameObject p2s2;
     public Image p2s2_i;
-=======
 
 	public AudioSource bearsound;
 	public AudioSource lightningsound;
 	public AudioSource healsound;
 	public AudioSource powerupsound;
->>>>>>> 032e8e8a347fc92a28bac1d342d095089c91da1e
 
 	private int player1;
 	private int player2;
@@ -127,22 +124,13 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.A) && cooldown_p1s1 >= 2.0f && resource1 >= cost) 
 		{
 			resource1 -= cost;
-<<<<<<< HEAD
 			cooldown_p1s1 = 0.0f;
-=======
-			cooldown1 = 1.5f;
->>>>>>> 032e8e8a347fc92a28bac1d342d095089c91da1e
 			SpawnEnemy (enemy1, leftCursor.transform.localPosition + new Vector3(1f, 0f, 0f));
 		}
         if (Input.GetKeyDown(KeyCode.S) && cooldown_p1s2 >= 3.0f && resource1 >= spec_cost)
         {
             resource1 -= spec_cost;
-<<<<<<< HEAD
             cooldown_p1s2 = 0.0f;
-=======
-            cooldown1 = 1.5f;
->>>>>>> 032e8e8a347fc92a28bac1d342d095089c91da1e
-
             switch(player1)
             {
                 case 1: // michelle
@@ -199,21 +187,13 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.J) && cooldown_p2s1 >= 2.0f && resource2 >= cost) 
 		{
 			resource2 -= cost;
-<<<<<<< HEAD
 			cooldown_p2s1 = 0.0f;
-=======
-			cooldown2 = 1.5f;
->>>>>>> 032e8e8a347fc92a28bac1d342d095089c91da1e
 			SpawnEnemy (enemy2, rightCursor.transform.localPosition - new Vector3(1f, 0f, 0f));
 		}
         if (Input.GetKeyDown(KeyCode.K) && cooldown_p2s2 >= 3.0f && resource2 >= spec_cost)
         {
             resource2 -= spec_cost;
-<<<<<<< HEAD
             cooldown_p2s2 = 0.0f;
-=======
-            cooldown2 = 1.5f;
->>>>>>> 032e8e8a347fc92a28bac1d342d095089c91da1e
             switch (player2)
             {
                 case 1: // michelle
